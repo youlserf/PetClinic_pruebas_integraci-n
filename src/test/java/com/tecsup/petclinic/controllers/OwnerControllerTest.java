@@ -11,6 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.tecsup.petclinic.dto.OwnerDTO;
+import com.tecsup.petclinic.dto.PetDTO;
 
 /**
  * 
@@ -57,6 +61,11 @@ public class OwnerControllerTest {
 					//.andExpect(jsonPath("$[212].id", is(ID_LAST)));
 	}
 	
+	
+	/**
+	 * @throws Exception
+	 */
+	
 	@Test
     public void testCreateOwner() throws Exception {
 		
@@ -83,6 +92,41 @@ public class OwnerControllerTest {
 				.andExpect(jsonPath("$.telephone", is(TELEPHONE_OWNER)));
     
 	}
+	/**
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteOwner() throws Exception {
+
+		
+		
+		String FIRST_NAME_OWNER = "Alexander";
+		String LAST_NAME_OWNER = "Flores";
+		String ADDRESS_OWNER = "110 W. Liberty St.";
+		String CITY_OWNER = "Orlando";
+		String TELEPHONE_OWNER = "6085551023";
+		
+		
+		OwnerDTO newOwner = new OwnerDTO( FIRST_NAME_OWNER, LAST_NAME_OWNER, ADDRESS_OWNER,CITY_OWNER,TELEPHONE_OWNER);
+		
+		ResultActions mvcActions = mockMvc.perform(post("/owners")
+	            .content(om.writeValueAsString(newOwner))
+	            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(status().isCreated());
+	            
+		String response = mvcActions.andReturn().getResponse().getContentAsString();
+
+		Integer id = JsonPath.parse(response).read("$.id");
+
+        mockMvc.perform(delete("/owners/" + id ))
+                 /*.andDo(print())*/
+                .andExpect(status().isOk());
+    }
+	
+	
+    
 	
 }
     
