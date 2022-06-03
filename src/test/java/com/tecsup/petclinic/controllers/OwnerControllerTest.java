@@ -125,6 +125,43 @@ public class OwnerControllerTest {
                 .andExpect(status().isOk());
     }
 	
+
+	/**
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void testFindPetOK() throws Exception {
+
+		String FIRST_NAME_OWNER = "Sebastian";
+		String LAST_NAME_OWNER = "Marquez";
+		String ADDRESS_OWNER = "Av. Las Piedras Azules";
+		String CITY_OWNER = "Ciudad Luminalia";
+		String TELEPHONE_OWNER = "5667897346";
+
+		/*
+		 {
+		    "id": 1,
+		    "name": "Leo",
+		    "typeId": 1,
+		    "ownerId": 1,
+		    "birthDate": "2000-09-07"
+		}
+		 */
+		
+		mockMvc.perform(get("/owners/" + FIRST_NAME_OWNER))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				//.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.first_name_owner", is(LAST_NAME_OWNER)))
+				.andExpect(jsonPath("$.last_name_owner", is(LAST_NAME_OWNER)))
+				.andExpect(jsonPath("$.city_owner", is(CITY_OWNER)))
+				.andExpect(jsonPath("$.telephone_owner", is(TELEPHONE_OWNER)));
+
+	}
+
 	
     
 	
