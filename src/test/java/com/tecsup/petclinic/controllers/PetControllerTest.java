@@ -95,7 +95,7 @@ public class PetControllerTest {
 				.andExpect(jsonPath("$.birthDate", is(DATE_REF)));
 
 	}
-
+	
 	/**
 	 * 
 	 * @throws Exception

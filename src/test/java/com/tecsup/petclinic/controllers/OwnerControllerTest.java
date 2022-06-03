@@ -132,7 +132,7 @@ public class OwnerControllerTest {
 	 * 
 	 */
 	@Test
-	public void testFindPetOK() throws Exception {
+	public void testFindOwnerOK() throws Exception {
 
 		String FIRST_NAME_OWNER = "Sebastian";
 		String LAST_NAME_OWNER = "Marquez";
@@ -162,6 +162,20 @@ public class OwnerControllerTest {
 
 	}
 
+	/**
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testFindOwnerKO() throws Exception {
+
+        int ID_SEARCH = 666;
+
+        
+        mockMvc.perform(get("/owners/" + ID_SEARCH)) // Finding object with ID = 666
+                .andExpect(status().isNotFound());
+
+    }
 	
     
 	
